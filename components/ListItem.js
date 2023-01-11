@@ -1,15 +1,15 @@
 import{
-    Image, 
-    StyleSheet, 
-    View, 
-    Text, 
+    Image,
+    StyleSheet,
+    View,
+    Text,
     TouchableOpacity
 } from 'react-native';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 
 const ListItem = ({singleMedia}) => {
-    const item = props.singleMedia;
+    const item = singleMedia;
     return (
         <TouchableOpacity>
             <Image
@@ -17,14 +17,16 @@ const ListItem = ({singleMedia}) => {
             source={{ uri: item.thumbnails.w160 }}
             ></Image>
             <View>
-            <Text>{item.title}</Text>
-            <Text>{item.description}</Text>
+              <Text>{item.title}</Text>
+              <Text>{item.description}</Text>
             </View>
         </TouchableOpacity>
     );
 
 };
-export default ListItem;
-ListItem.PropTypes = {
+
+ListItem.propTypes = {
     singleMedia: PropTypes.object,
 };
+
+export default ListItem;

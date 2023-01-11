@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, SafeAreaView } from "react-native";
-import List from ''
+import List from './components/List';
 
 
 const App = () => {
+  // console.log("App starting!")
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -12,7 +13,7 @@ const App = () => {
       <StatusBar style="auto" />
     </>
   );
-}
+};
 
 export default App;
 

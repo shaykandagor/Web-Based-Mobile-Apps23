@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import Home from "./views/Home";
+import Navigator from "./navigators/Navigator";
+
 
 
 const App = () => {
   // console.log("App starting!")
   return (
     <>
-      <Navigator />
+      <Navigator/>
       <StatusBar style="auto" />
     </>
   );

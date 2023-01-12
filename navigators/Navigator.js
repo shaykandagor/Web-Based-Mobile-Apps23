@@ -3,17 +3,41 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Single from '../views/Single';
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const TabScreen = () => {
+  return(
+    <Tab.Navigator>
+        <Tab.Screen name="Home" components={Home} />
+        <Tab.Screen name="Profile" components={Profile} />
+    </Tab.Navigator>
+  );
+
+};
+
+const StackScreen = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+      name="Tabs"
+      component={TabScreen}
+      options={{headerShown: false}} />
+      <Stack.Screen name="Single" component={Single} />
+    </Stack.Navigator>
+
+  );
+};
+
 
 const Navigator = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" components={Home} />
-        <Tab.Screen name="Profile" components={Profile} />
-      </Tab.Navigator>
+      <StackScreen />
     </NavigationContainer>
   );
 };

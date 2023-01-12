@@ -25,6 +25,27 @@ const ListItem = ({singleMedia}) => {
 
 };
 
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    backgroundColor: '#ccc',
+    marginBottom: 10,
+  },
+  box: {
+    flex: 1,
+    padding: 10,
+  },
+  image: {
+    flex: 1,
+    minHeight: 100,
+  },
+  listTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    paddingBottom: 15,
+  },
+});
+
 ListItem.propTypes = {
     singleMedia: PropTypes.object,
 };

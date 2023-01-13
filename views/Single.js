@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView, Text, Image} from 'react-native';
-import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
+import PropTypes from 'prop-types';
 
 const Single = ({route}) => {
   console.log(route.params);
@@ -9,9 +9,9 @@ const Single = ({route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text>{title}</Text>
-      <Text>{description}</Text>
       <Image style={styles.image} source={{uri: uploadsUrl + filename}} />
       <Text>{timeAdded}</Text>
+      <Text>{description}</Text>
     </SafeAreaView>
   );
 };

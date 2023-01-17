@@ -4,7 +4,6 @@ import {uploadsUrl} from '../utils/variables';
 
 const ListItem = ({singleMedia, navigation}) => {
   const item = singleMedia;
-  console.log(item);
   return (
     <TouchableOpacity
       style={styles.row}
@@ -39,8 +38,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     minHeight: 100,
-    width: 200,
-    height: 300,
   },
   listTitle: {
     fontWeight: 'bold',

@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
 
-/* eslint-disable-next-line no-unused-vars */
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
   const json = await response.json();
@@ -47,11 +46,18 @@ const useAuthentication = () => {
     // eslint-disable-next-line no-unused-vars
     const options = {
       // TODO: add method, headers and body for sending json data with POST
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(userCredentials),
     };
     try {
       // TODO: use fetch to send request to login endpoint and return the result as json, handle errors with try/catch and response.ok
+      const loginResult = await doFetch(baseUrl + 'login', options);
+      return loginResult;
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error('postLogin:' + error.message);
     }
   };
   return {postLogin};
@@ -61,6 +67,21 @@ const useAuthentication = () => {
 const useUser = () => {
   const checkUser = async () => {
     // call https://media.mw.metropolia.fi/wbma/docs/#api-User-CheckUserName
+    const options = {
+      method: 'GET',
+      // eslint-disable-next-line no-undef
+      headers: {'x-access-token': token},
+    };
+    try {
+      // TODO: use fetch to send request to login endpoint and return the result as json, handle errors with try/catch and response.ok
+      const response = await fetch(baseUrl + 'users/user', options);
+      const userData = await response.json();
+      if (response.ok) {
+        return userData;
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
   return {checkUser};
 };

@@ -1,4 +1,13 @@
-import {Image, StyleSheet, View, Text, TouchableOpacity, SafeAreaView, StatusBar, ImageBackground} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  ImageBackground,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 import {Menu, Home} from 'react-native-feather';
@@ -36,19 +45,20 @@ const ListItem = ({singleMedia}) => {
         <View style={styles.areaA}>
           <Text>Cool Kittens</Text>
         </View>
+      <View style={styles.areaB}></View>
+        <TouchableOpacity style={styles.row}>
+          <View style={styles.box}>
+            <Image
+              style={styles.catPic}
+              source={{uri: uploadsUrl + item.thumbnails?.w160}}
+            />
+          </View>
+          <View style={styles.catInfo}>
+            <Text style={styles.listTitle}>{item.title}</Text>
+            <Text>{item.description}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.row}>
-        <View style={styles.box}>
-          <Image
-            style={styles.image}
-            source={{uri: uploadsUrl + item.thumbnails?.w160}}
-          />
-        </View>
-        <View style={styles.box}>
-          <Text style={styles.listTitle}>{item.title}</Text>
-          <Text>{item.description}</Text>
-        </View>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -105,17 +115,27 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
+    minHeight: 100,
     width: 200,
     height: 100,
     marginRight: 10,
     borderRadius: 5,
-    flex: 1,
-    minHeight: 100,
   },
   listTitle: {
     fontWeight: 'bold',
     fontSize: 20,
     paddingBottom: 15,
+  },
+  catPic: {
+    width: 200,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 5,
+    flex: 1,
+  },
+  catInfo: {
+    backgroundColor: "orange",
+    width: 150,
   },
 });
 
@@ -124,4 +144,3 @@ ListItem.propTypes = {
 };
 
 export default ListItem;
-

@@ -1,6 +1,6 @@
 import {StatusBar} from 'expo-status-bar';
 import {Platform, StyleSheet, SafeAreaView} from 'react-native';
-import List from './components/List'
+import List from './components/List';
 
 const App = () => {
   return (

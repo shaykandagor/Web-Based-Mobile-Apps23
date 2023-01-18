@@ -9,14 +9,17 @@ const App = () => {
         <StatusBar style="auto" />
       </SafeAreaView>
    );
-}
+};
 
 export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-around',
     backgroundColor: '#fff',
+    height: '100%',
+    paddingTop: 0,
     paddingTop: Platform.OS === 'android' ? 30 : 0,
   },
 });

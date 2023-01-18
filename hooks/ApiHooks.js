@@ -65,25 +65,19 @@ const useAuthentication = () => {
 
 // https://media.mw.metropolia.fi/wbma/docs/#api-User
 const useUser = () => {
-  const checkUser = async () => {
+  const getUserByToken = async () => {
     // call https://media.mw.metropolia.fi/wbma/docs/#api-User-CheckUserName
     const options = {
       method: 'GET',
-      // eslint-disable-next-line no-undef
       headers: {'x-access-token': token},
     };
     try {
-      // TODO: use fetch to send request to login endpoint and return the result as json, handle errors with try/catch and response.ok
-      const response = await fetch(baseUrl + 'users/user', options);
-      const userData = await response.json();
-      if (response.ok) {
-        return userData;
-      }
+      return await doFetch(baseUrl + 'users/user', options);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error('checkUser: ' + error.message);
     }
   };
-  return {checkUser};
+  return {getUserByToken};
 };
 
 export {useMedia, useAuthentication, useUser};

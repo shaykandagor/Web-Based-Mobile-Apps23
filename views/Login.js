@@ -25,14 +25,11 @@ const Login = ({navigation}) => {
   const checkToken = async () => {
     try {
       const userToken = await AsyncStorage.getItem('userToken');
-      if (
-        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNzEzLCJ1c2VybmFtZSI6InNoYXluZWsiLCJlbWFpbCI6InNoYXluZWtAbWV0cm9wb2xpYS5maSIsImZ1bGxfbmFtZSI6bnVsbCwiaXNfYWRtaW4iOm51bGwsInRpbWVfY3JlYXRlZCI6IjIwMjMtMDEtMTRUMTY6NTc6NDguMDAwWiIsImlhdCI6MTY3NDAzMjkxNiwiZXhwIjoxNjc0MTE5MzE2fQ.1ezowX3ukqtIWacizd_eyBY1xBYYAXAtNR8_ThX1qdQ',
-        userToken)
-      ) {
-        setIsLoggedIn(true);
-      }
+      const userData = getUserByToken(userToken);
+      console.log('checkToken', userData);
+      setIsLoggedIn(true);
     } catch (error) {
-      console.log('no valid token available');
+      console.log('checkToken', error);
     }
   };
 

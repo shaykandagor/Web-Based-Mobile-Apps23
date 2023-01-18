@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
 
+/* eslint-disable-next-line no-unused-vars */
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
   const json = await response.json();

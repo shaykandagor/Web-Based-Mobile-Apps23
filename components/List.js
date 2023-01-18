@@ -5,8 +5,7 @@ const mediaArray = [
   {
     key: '0',
     title: 'Title 1',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     thumbnails: {
       w160: 'http://placekitten.com/160/161',
     },
@@ -25,8 +24,7 @@ const mediaArray = [
   {
     key: '2',
     title: 'Title 3',
-    description:
-      'Phasellus imperdiet nunc tincidunt molestie vestibulum.',
+    description: 'Phasellus imperdiet nunc tincidunt molestie vestibulum.',
     thumbnails: {
       w160: 'http://placekitten.com/160/167',
     },

@@ -13,7 +13,7 @@ const ListItem = ({singleMedia}) => {
         <ImageBackground
           source={require('../assets/sunset.jpg')}
           style={styles.bgImage}
-          imageStyle={{ borderBottomRightRadius: 65 }}
+          imageStyle={{borderBottomRightRadius: 65}}
         ></ImageBackground>
         <Menu
           stroke="white"
@@ -36,22 +36,20 @@ const ListItem = ({singleMedia}) => {
         <View style={styles.areaA}>
           <Text>Cool Kittens</Text>
         </View>
-        <View style={styles.areaB}>
-          <TouchableOpacity style={styles.row}>
-            <View style={styles.box}>
-              <Image
-                style={styles.image}
-                source={{uri: uploadsUrl + item.thumbnails?.w160}}
-              />
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.listTitle}>{item.title}</Text>
-              <Text>{item.description}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
       </View>
-  </SafeAreaView>
+      <TouchableOpacity style={styles.row}>
+        <View style={styles.box}>
+          <Image
+            style={styles.image}
+            source={{uri: uploadsUrl + item.thumbnails?.w160}}
+          />
+        </View>
+        <View style={styles.box}>
+          <Text style={styles.listTitle}>{item.title}</Text>
+          <Text>{item.description}</Text>
+        </View>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 

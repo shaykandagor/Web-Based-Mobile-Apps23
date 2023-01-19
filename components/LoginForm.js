@@ -1,14 +1,12 @@
 import React, {useContext} from 'react';
-import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuthentication} from '../hooks/ApiHooks';
-
 import {Button, Text, TextInput, View} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
 
-const LoginForm = (props) => {
-  const {setIsLoggedIn} = useContext(MainContext);
+const LoginForm = () => {
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useAuthentication();
   const {
     control,
@@ -26,6 +24,7 @@ const LoginForm = (props) => {
       console.log('logIn', loginResult);
       await AsyncStorage.setItem('userToken', loginResult.token);
       setIsLoggedIn(true);
+      setUser(loginResult.user);
     } catch (error) {
       console.error('logIn', error);
       // TODO: notify user about failed login attempt
@@ -71,7 +70,5 @@ const LoginForm = (props) => {
     </View>
   );
 };
-
-LoginForm.propTypes = {};
 
 export default LoginForm;

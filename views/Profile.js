@@ -1,13 +1,41 @@
-import React, {useContext} from 'react';
-import {StyleSheet, SafeAreaView, Text, Button} from 'react-native';
+import React, {lazy, useContext, useEffect, useState} from 'react';
+import {Button} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTag} from '../hooks/ApiHooks';
+import {Card} from '@rneui/themed';
+import {Icon, ListItem} from '@rneui/base';
 
 const Profile = () => {
+  const {getFilesByTag} = useTag();
   const {setIsLoggedIn} = useContext(MainContext);
+  const [avatar, setAvatar] =  useState('');
+
+  const loadAvatar = async () => {
+    try {
+      const avatar = await getFilesByTag('avatar_' + user.user_id);
+      setAvatar(avatarArray.pop().filename);
+    } catch (error) {
+      console.error('user avatar fetch failed', error.message);
+    }
+  };
+
+  useEffect(() => {
+    loadAvatar();
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Profile</Text>
+    <Card>
+      <Card.Title>Username: {user.name}</Card.Title>
+      <Card.Image source={{uri: uploadsUrl + avatar}} />
+      <ListItem>
+        <Icon name='email '/>
+        <ListItem.Title>{user.email}</ListItem.Title>
+      </ListItem>
+      <ListItem>
+        <Icon name='badge' />
+        <ListItem.Title>{user.full_name}</ListItem.Title>
+      </ListItem>
       <Button
         title="Logout!"
         onPress={async () => {
@@ -20,18 +48,9 @@ const Profile = () => {
           }
         }}
       />
-    </SafeAreaView>
+    </Card>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 40,
-  },
-});
 
 export default Profile;

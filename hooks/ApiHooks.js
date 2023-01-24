@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import {baseUrl} from '../utils/variables';
+
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
   const json = await response.json();
@@ -11,8 +12,10 @@ const doFetch = async (url, options) => {
   }
   return json;
 };
+
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+
   const loadMedia = async () => {
     try {
       const response = await fetch(baseUrl + 'media');
@@ -23,16 +26,20 @@ const useMedia = () => {
           return await fileResponse.json();
         })
       );
+
       setMediaArray(media);
     } catch (error) {
       console.error('List, loadMedia', error);
     }
   };
+
   useEffect(() => {
     loadMedia();
   }, []);
+
   return {mediaArray};
 };
+
 const useAuthentication = () => {
   const postLogin = async (userCredentials) => {
     // user credentials format: {username: 'someUsername', password: 'somePassword'}
@@ -53,6 +60,7 @@ const useAuthentication = () => {
   };
   return {postLogin};
 };
+
 // https://media.mw.metropolia.fi/wbma/docs/#api-User
 const useUser = () => {
   const getUserByToken = async (token) => {

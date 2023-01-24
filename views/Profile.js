@@ -1,4 +1,4 @@
-import React, {lazy, useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,7 +9,7 @@ import {Icon, ListItem} from '@rneui/base';
 const Profile = () => {
   const {getFilesByTag} = useTag();
   const {setIsLoggedIn} = useContext(MainContext);
-  const [avatar, setAvatar] =  useState('');
+  const [avatar, setAvatar] = useState('');
 
   const loadAvatar = async () => {
     try {
@@ -29,11 +29,11 @@ const Profile = () => {
       <Card.Title>Username: {user.name}</Card.Title>
       <Card.Image source={{uri: uploadsUrl + avatar}} />
       <ListItem>
-        <Icon name='email '/>
+        <Icon name="email" />
         <ListItem.Title>{user.email}</ListItem.Title>
       </ListItem>
       <ListItem>
-        <Icon name='badge' />
+        <Icon name="badge" />
         <ListItem.Title>{user.full_name}</ListItem.Title>
       </ListItem>
       <Button

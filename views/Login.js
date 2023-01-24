@@ -3,14 +3,19 @@ import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet , TouchableOpacity} from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {useContext, useEffect} from 'react';
 import RegisterForm from '../components/RegisterForm';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserByToken} = useUser();
-
 
   const checkToken = async () => {
     try {

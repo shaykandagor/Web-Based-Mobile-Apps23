@@ -1,19 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTag} from '../hooks/ApiHooks';
-import {Card} from '@rneui/themed';
-import {Icon, ListItem} from '@rneui/base';
+import {uploadsUrl} from '../utils/variables';
+import {Button, Card, Icon, ListItem} from '@rneui/themed';
 
 const Profile = () => {
   const {getFilesByTag} = useTag();
-  const {setIsLoggedIn} = useContext(MainContext);
+  const {setIsLoggedIn, user, setUser} = useContext(MainContext);
   const [avatar, setAvatar] = useState('');
 
   const loadAvatar = async () => {
     try {
-      const avatar = await getFilesByTag('avatar_' + user.user_id);
+      const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
       console.error('user avatar fetch failed', error.message);
@@ -26,7 +25,7 @@ const Profile = () => {
 
   return (
     <Card>
-      <Card.Title>Username: {user.name}</Card.Title>
+      <Card.Title>{user.username}</Card.Title>
       <Card.Image source={{uri: uploadsUrl + avatar}} />
       <ListItem>
         <Icon name="email" />
@@ -39,7 +38,8 @@ const Profile = () => {
       <Button
         title="Logout!"
         onPress={async () => {
-          console.log('Logging Out!');
+          console.log('Logging out!');
+          setUser({});
           setIsLoggedIn(false);
           try {
             await AsyncStorage.clear();
@@ -51,6 +51,5 @@ const Profile = () => {
     </Card>
   );
 };
-
 
 export default Profile;

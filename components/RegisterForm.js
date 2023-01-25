@@ -1,7 +1,7 @@
 import React from 'react';
 import {useUser} from '../hooks/ApiHooks';
-import {Button, Text, TextInput, View} from 'react-native';
 import {Controller, useForm} from 'react-hook-form';
+import {Card, Button, Text, Input} from '@rneui/themed';
 
 const RegisterForm = () => {
   // const {setIsLoggedIn} = useContext(MainContext);
@@ -27,13 +27,13 @@ const RegisterForm = () => {
   };
 
   return (
-    <View>
-      <Text>Registeration Form</Text>
+    <Card>
+      <Card.Title>Registration Form</Card.Title>
       <Controller
         control={control}
         rules={{required: true, minLength: 3}}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="Username"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -42,6 +42,7 @@ const RegisterForm = () => {
         )}
         name="username"
       />
+      {/* TODO: Fix error messages for RNE components */}
       {errors.username?.type === 'required' && <Text>is required</Text>}
       {errors.username?.type === 'minLength' && (
         <Text>min length is 3 characters</Text>
@@ -50,7 +51,7 @@ const RegisterForm = () => {
         control={control}
         rules={{required: true, minLength: 5}}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="Password"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -65,7 +66,7 @@ const RegisterForm = () => {
         control={control}
         rules={{required: true}}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -79,7 +80,7 @@ const RegisterForm = () => {
         control={control}
         rules={{minLength: 3}}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             placeholder="Full name"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -93,7 +94,7 @@ const RegisterForm = () => {
       )}
 
       <Button title="Sign in!" onPress={handleSubmit(register)} />
-    </View>
+    </Card>
   );
 };
 

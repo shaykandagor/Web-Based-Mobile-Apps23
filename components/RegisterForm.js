@@ -1,7 +1,7 @@
 import React from 'react';
 import {useUser} from '../hooks/ApiHooks';
 import {Controller, useForm} from 'react-hook-form';
-import {Card, Button, Text, Input} from '@rneui/themed';
+import {Card, Button, Input} from '@rneui/themed';
 
 const RegisterForm = () => {
   // const {setIsLoggedIn} = useContext(MainContext);
@@ -9,14 +9,22 @@ const RegisterForm = () => {
   const {postUser, checkUsername} = useUser();
   const {
     control,
+    getValues,
     handleSubmit,
     formState: {errors},
   } = useForm({
-    defaultValues: {username: '', password: '', email: '', full_name: ''},
+    defaultValues: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+      email: '',
+      full_name: '',
+    },
     mode: 'onBlur',
   });
 
   const register = async (registerData) => {
+    delete registerData.confirmPassword;
     console.log('Registering: ', registerData);
     try {
       // if (!(await checkUser())) return;
@@ -73,7 +81,7 @@ const RegisterForm = () => {
           pattern: {
             value: /(?=.*\p{Lu})(?=.*[0-9]).{5,} /u,
             message:
-              'min 5 characters, needs one numbers and one uppercase letter',
+              'Min 5 characters, needs one numbers and one uppercase letter',
           },
         }}
         render={({field: {onChange, onBlur, value}}) => (
@@ -90,7 +98,41 @@ const RegisterForm = () => {
       />
       <Controller
         control={control}
-        rules={{required: true}}
+        rules={{
+          validate: (value) => {
+            if (value === getValues('password')) {
+              return true;
+            } else {
+              return 'password does not match';
+            }
+          },
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
+            placeholder="Confirm password"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            secureTextEntry={true}
+            errorMessage={
+              errors.confirmPassword && errors.confirmPassword.message
+            }
+          />
+        )}
+        name="confirmPassowrd"
+      />
+      <Controller
+        control={control}
+        rules={{
+          required: {
+            value: true,
+            message: 'Email is required',
+          },
+          pattern: {
+            value: /^[a-z0-9.-]{1,64}@[a-z0-9.-]{3,64}/u,
+            message: 'Must be a valid email',
+          },
+        }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
             placeholder="Email"
@@ -98,14 +140,16 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.email && errors.email.message}
           />
         )}
         name="email"
       />
-      {errors.email?.type === 'required' && <Text>is required</Text>}
       <Controller
         control={control}
-        rules={{minLength: 3}}
+        rules={{
+          minLength: {value: 3, message: 'Must be at least 3 characters'},
+        }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
             placeholder="Full name"
@@ -113,14 +157,11 @@ const RegisterForm = () => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="words"
+            errorMessage={errors.full_name && errors.full_name.message}
           />
         )}
         name="full_name"
       />
-      {errors.full_name?.type === 'minLength' && (
-        <Text>min length is 3 characters</Text>
-      )}
-
       <Button title="Register!" onPress={handleSubmit(register)} />
     </Card>
   );

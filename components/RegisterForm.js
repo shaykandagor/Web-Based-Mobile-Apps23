@@ -76,10 +76,10 @@ const RegisterForm = () => {
           required: {
             value: true,
             message:
-              'min 5 characters, needs one numbers and one uppercase letter',
+              'min 5 characters, needs one number and one uppercase letter',
           },
           pattern: {
-            value: /(?=.*\p{Lu})(?=.*[0-9]).{5,} /u,
+            value: /(?=.*\p{Lu})(?=.*[0-9]).{5,}/u,
             message:
               'Min 5 characters, needs one numbers and one uppercase letter',
           },
@@ -119,7 +119,7 @@ const RegisterForm = () => {
             }
           />
         )}
-        name="confirmPassowrd"
+        name="confirmPassword"
       />
       <Controller
         control={control}

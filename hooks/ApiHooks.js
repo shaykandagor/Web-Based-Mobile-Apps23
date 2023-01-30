@@ -36,8 +36,23 @@ const useMedia = () => {
   useEffect(() => {
     loadMedia();
   }, []);
-
-  return {mediaArray};
+  const postMedia = async (fileData, token) => {
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'multipart/form-data',
+      },
+      body: fileData,
+    };
+    try {
+      // TODO: use fetch to send request to login endpoint and return the result as json, handle errors with try/catch and response.ok
+      return await doFetch(baseUrl + 'media', options);
+    } catch (error) {
+      throw new Error('postUpload: ' + error.message);
+    }
+  };
+  return {mediaArray, postMedia};
 };
 
 const useAuthentication = () => {

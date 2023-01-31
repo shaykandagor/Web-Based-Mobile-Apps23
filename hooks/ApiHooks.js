@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {baseUrl} from '../utils/variables';
 
 const doFetch = async (url, options) => {
@@ -15,6 +16,7 @@ const doFetch = async (url, options) => {
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const {update} = useContext(MainContext);
 
   const loadMedia = async () => {
     try {
@@ -35,7 +37,9 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
-  }, []);
+    // TODO: load media when updating state changes in main context
+    // add update state to the array below
+  }, [update]);
   const postMedia = async (fileData, token) => {
     const options = {
       method: 'post',

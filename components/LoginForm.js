@@ -18,7 +18,7 @@ const LoginForm = () => {
 
   const logIn = async (loginData) => {
     console.log('Login button pressed', loginData);
-    // const data = {username: 'ilkkamtk', password: 'q1w2e3r4'};
+    // const data = {username: 'shaynek', password: 'secret254'};
     try {
       const loginResult = await postLogin(loginData);
       console.log('logIn', loginResult);
@@ -44,6 +44,7 @@ const LoginForm = () => {
             onChangeText={onChange}
             value={value}
             errorMessage={errors.username && errors.username.message}
+            autoCapitalize="none"
           />
         )}
         name="username"

@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../contexts/MainContext';
-import {baseUrl} from '../utils/variables';
+import {appId, baseUrl} from '../utils/variables';
 
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
@@ -20,26 +20,27 @@ const useMedia = () => {
 
   const loadMedia = async () => {
     try {
-      const response = await fetch(baseUrl + 'media');
-      const json = await response.json();
+      // const response = await fetch(baseUrl + 'media');
+      // const json = await response.json();
+      const json = await useTag().getFilesByTag(appId);
+
       const media = await Promise.all(
         json.map(async (file) => {
           const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
           return await fileResponse.json();
         })
       );
-
       setMediaArray(media);
     } catch (error) {
       console.error('List, loadMedia', error);
     }
   };
-
   useEffect(() => {
     loadMedia();
-    // TODO: load media when updating state changes in main context
-    // add update state to the array below
+    // load media when update state changes in main context
+    // by adding update state to the array below
   }, [update]);
+
   const postMedia = async (fileData, token) => {
     const options = {
       method: 'post',
@@ -50,12 +51,12 @@ const useMedia = () => {
       body: fileData,
     };
     try {
-      // TODO: use fetch to send request to login endpoint and return the result as json, handle errors with try/catch and response.ok
       return await doFetch(baseUrl + 'media', options);
     } catch (error) {
       throw new Error('postUpload: ' + error.message);
     }
   };
+
   return {mediaArray, postMedia};
 };
 
@@ -108,6 +109,7 @@ const useUser = () => {
       throw new Error('postUser: ' + error.message);
     }
   };
+
   const checkUsername = async (username) => {
     try {
       const result = await doFetch(baseUrl + 'users/username/' + username);
@@ -128,7 +130,23 @@ const useTag = () => {
       throw new Error('getFilesByTag, ' + error.message);
     }
   };
-  return {getFilesByTag};
+
+  const postTag = async (data, token) => {
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      return await doFetch(baseUrl + 'tags', options);
+    } catch (error) {
+      throw new Error('postTag: ' + error.message);
+    }
+  };
+  return {getFilesByTag, postTag};
 };
 
 export {useMedia, useAuthentication, useUser, useTag};

@@ -3,11 +3,12 @@ import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {Text, Card, ListItem, Icon} from '@rneui/themed';
 import {Video} from 'expo-av';
-import {ScrollView} from 'react-native';
+import {Modal, ScrollView} from 'react-native';
 import {useFavourite, useUser} from '../hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MainContext} from '../contexts/MainContext';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import {Image} from '@rneui/base';
 
 const Single = ({route}) => {
   // console.log(route.params);
@@ -25,6 +26,7 @@ const Single = ({route}) => {
   const [owner, setOwner] = useState({});
   const [likes, setLikes] = useState([]);
   const [userLikesIt, setUserLikesIt] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const {user} = useContext(MainContext);
   const {getUserById} = useUser();
   const {getFavouritesByFileId, postFavourite, deleteFavourite} =
@@ -92,72 +94,100 @@ const Single = ({route}) => {
     }
   };
 
-  useEffect(() => {
-    getOwner();
-    getLikes();
-    unlock();
-
-    return () => {
-      lock();
-    };
-  }, []);
-
   const showVideoInFullScreen = async () => {
     try {
-      if (video) await video.presentFullscreenPlayer();
+      await video.current.presentFullscreenPlayer();
     } catch (error) {
       console.error('showVideoInFullScreen', error.message);
     }
   };
 
+  useEffect(() => {
+    getOwner();
+    getLikes();
+    unlock();
+
+    const orientSub = ScreenOrientation.addOrientationChangeListener((evt) => {
+      console.log('orientation', evt);
+      if (evt.orientationInfo.orientation > 2) {
+        // show video in fullscreen
+        if (video.current) showVideoInFullScreen();
+      }
+    });
+
+    return () => {
+      ScreenOrientation.removeOrientationChangeListener(orientSub);
+      lock();
+    };
+  }, []);
   return (
-    <ScrollView>
-      <Card>
-        <Card.Title>{title}</Card.Title>
-        <Card.Divider />
-        {type === 'image' ? (
-          <Card.Image source={{uri: uploadsUrl + filename}} />
-        ) : (
-          <Video
-            ref={video}
-            source={{uri: uploadsUrl + filename}}
-            style={{width: '100%', height: 200}}
-            resizeMode="cover"
-            useNativeControls
-            onError={(error) => {
-              console.log(error);
-            }}
-            isLooping
-          />
-        )}
-        <Card.Divider />
-        {description && (
-          <ListItem onPress={showVideoInFullScreen}>
-            <Text>{description}</Text>
-          </ListItem>
-        )}
-        <ListItem>
-          <Icon name="schedule" />
-          <Text>{new Date(timeAdded).toLocaleString('fi-FI')}</Text>
-          <Icon name="save" />
-          <Text>{(filesize / 1000000).toFixed(2)} MB</Text>
-        </ListItem>
-        <ListItem>
-          <Icon name="person" />
-          <Text>
-            {owner.username} ({owner.full_name})
-          </Text>
-        </ListItem>
-        <ListItem>
-          {userLikesIt ? (
-            <Icon name="favorite" color="red" onPress={dislikeFile} />
+    <>
+      <ScrollView>
+        <Card>
+          <Card.Title>{title}</Card.Title>
+          <Card.Divider />
+          {type === 'image' ? (
+            <Card.Image
+              onPress={() => setModalVisible(true)}
+              source={{uri: uploadsUrl + filename}}
+            />
           ) : (
-            <Icon name="favorite-border" onPress={likeFile} />
+            <Video
+              ref={video}
+              source={{uri: uploadsUrl + filename}}
+              style={{width: '100%', height: 200}}
+              resizeMode="cover"
+              useNativeControls
+              onError={(error) => {
+                console.log(error);
+              }}
+              isLooping
+            />
           )}
-          <Text>Total likes: {likes.length}</Text>
-        </ListItem>
-      </Card>
-    </ScrollView>
+          <Card.Divider />
+          {description && (
+            <ListItem>
+              <Text>{description}</Text>
+            </ListItem>
+          )}
+          <ListItem>
+            <Icon name="schedule" />
+            <Text>{new Date(timeAdded).toLocaleString('fi-FI')}</Text>
+            <Icon name="save" />
+            <Text>{(filesize / 1000000).toFixed(2)} MB</Text>
+          </ListItem>
+          <ListItem>
+            <Icon name="person" />
+            <Text>
+              {owner.username} ({owner.full_name})
+            </Text>
+          </ListItem>
+          <ListItem>
+            {userLikesIt ? (
+              <Icon name="favorite" color="red" onPress={dislikeFile} />
+            ) : (
+              <Icon name="favorite-border" onPress={likeFile} />
+            )}
+            <Text>Total likes: {likes.length}</Text>
+          </ListItem>
+        </Card>
+      </ScrollView>
+      <Modal
+        visible={modalVisible}
+        style={{flex: 1}}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+        supportedOrientations={['portrait', 'landscape']}
+      >
+        <Image
+          resizeMode="contain"
+          onPress={() => setModalVisible(false)}
+          style={{height: '100%'}}
+          source={{uri: uploadsUrl + filename}}
+        />
+      </Modal>
+    </>
   );
 };
 
